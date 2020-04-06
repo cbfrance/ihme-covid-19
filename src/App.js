@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { readRemoteFile } from 'react-papaparse'
-import './App.css'
 
 function App() {
   const [data, setData] = useState()
@@ -11,12 +10,29 @@ function App() {
       header: true,
       complete: (csv) => {
         setData(csv.data)
-        console.log('csv.data: ', csv.data)
       },
     })
   }, [])
 
-  return <div></div>
+  if (data) {
+    const locationNames = Array.from(
+      new Set(data.map((row) => row.location_name))
+    )
+
+    return (
+      <div>
+        <div>
+          <h3>{locationNames.length} locations</h3>
+          {locationNames.map((name, index) => (
+            <p>{name}</p>
+          ))}
+        </div>
+        <code>{JSON.stringify(data)}</code>
+      </div>
+    )
+  }
+
+  return <div>Loading ...</div>
 }
 
 export default App
