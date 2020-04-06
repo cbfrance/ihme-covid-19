@@ -40,8 +40,8 @@ const Line = ({ data }) => {
   return (
     <NivoLine
       margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
-      width={900}
-      height={400}
+      width={1200}
+      height={800}
       data={data}
       animate={true}
       enableSlices="x"
@@ -49,17 +49,27 @@ const Line = ({ data }) => {
         type: 'linear',
         stacked: true,
       }}
-      // data={data.filter((d) =>
-      //   ['rhum', 'whisky'].includes(d.id)
-      // )}
-      lineWidth={3}
-      curve="linear"
-      colors={['#028ee6', '#774dd7']}
+      data={data}
+      lineWidth={1}
+      curve="natural"
+      colors={{ scheme: 'blue_green' }}
       enableGridX={false}
-      pointSize={12}
+      pointSize={1}
       pointColor="white"
-      pointBorderWidth={2}
+      pointBorderWidth={1}
       pointBorderColor={{ from: 'serieColor' }}
+      xScale={{
+        type: 'time',
+        format: '%Y-%m-%d',
+        precision: 'day',
+      }}
+      xFormat="time:%Y-%m-%d"
+      axisBottom={{
+        format: '%b %d',
+        tickValues: 'every month',
+        legend: 'time scale',
+        legendOffset: -12,
+      }}
       layers={[
         'grid',
         'markers',

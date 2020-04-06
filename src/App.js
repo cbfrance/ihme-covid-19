@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { hot } from 'react-hot-loader'
 import { readRemoteFile } from 'react-papaparse'
 import LoadingIndicator from 'components/LoadingIndicator'
 import theme from 'theme'
 import FadeIn from 'components/FadeIn'
 import Line from 'components/Line'
+import Layout from 'components/Layout'
 
 function App() {
   const [fullDataset, setFullDataset] = useState()
@@ -37,34 +39,50 @@ function App() {
       // ​​​
       // deaths_upper: "0"
 
-      const locationChartData = locationData.map((row) => ({
-        x: row.date,
-        y: row.deaths_mean,
-      }))
+      const hasLocation = Boolean(currentLocation)
 
-      acc.push({
-        id: currentLocation,
-        color: theme.colors.black,
-        data: locationChartData,
-      })
+      if (hasLocation) {
+        acc.push({
+          id: currentLocation,
+          color: theme.colors.black,
+          data: locationData.reduce((acc, currentRow) => {
+            const hasDate = typeof currentRow.date !== 'undefined'
+
+            if (hasDate) {
+              acc.push({
+                x: currentRow.date,
+                y: currentRow.deaths_mean,
+              })
+            }
+
+            return acc
+          }, []),
+        })
+      }
 
       return acc
     }, [])
 
-    console.log('chartData: ', chartData)
+    // console.log('chartData: ', chartData)
+    // console.log(
+    //   'chartData as dates: ',
+    //   chartData.slice(0, 10).filter((row) => console.log(row))
+    // )
 
     return (
-      <FadeIn>
-        <div>
-          <h3>{locationNames.length} locations</h3>
-        </div>
+      <Layout>
+        <FadeIn>
+          <div>
+            <h3>{locationNames.length} locations</h3>
+          </div>
 
-        <Line data={chartData} />
-      </FadeIn>
+          <Line data={chartData.slice(0, 30)} />
+        </FadeIn>
+      </Layout>
     )
   }
 
   return <LoadingIndicator />
 }
 
-export default App
+export default hot(module)(App)
