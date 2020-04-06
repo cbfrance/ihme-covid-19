@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import { readRemoteFile } from 'react-papaparse'
+import './App.css'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [data, setData] = useState()
+
+  useEffect(() => {
+    readRemoteFile('data/2020_04_05.05.us/Hospitalization_all_locs.csv', {
+      download: true,
+      header: true,
+      complete: (csv) => {
+        setData(csv.data)
+        console.log('csv.data: ', csv.data)
+      },
+    })
+  }, [])
+
+  return <div></div>
 }
 
-export default App;
+export default App
