@@ -63,12 +63,6 @@ function App() {
       return acc
     }, [])
 
-    // console.log('chartData: ', chartData)
-    // console.log(
-    //   'chartData as dates: ',
-    //   chartData.slice(0, 10).filter((row) => console.log(row))
-    // )
-
     return (
       <Layout>
         <FadeIn>
@@ -76,7 +70,7 @@ function App() {
             <h3>{locationNames.length} locations</h3>
           </div>
 
-          <Line data={chartData.slice(0, 30)} />
+          <Line data={chartData} />
         </FadeIn>
       </Layout>
     )

@@ -3,6 +3,8 @@ import { Defs } from '@nivo/core'
 import { area, curveMonotoneX } from 'd3-shape'
 import { Line as NivoLine } from '@nivo/line'
 
+import { nivoTheme } from 'theme'
+
 const AreaLayer = ({ series, xScale, yScale, innerHeight }) => {
   const areaGenerator = area()
     .x((d) => xScale(d.data.x))
@@ -39,6 +41,7 @@ const AreaLayer = ({ series, xScale, yScale, innerHeight }) => {
 const Line = ({ data }) => {
   return (
     <NivoLine
+      // theme={nivoTheme}
       margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
       width={1200}
       height={800}
@@ -49,7 +52,6 @@ const Line = ({ data }) => {
         type: 'linear',
         stacked: true,
       }}
-      data={data}
       lineWidth={1}
       curve="natural"
       colors={{ scheme: 'blue_green' }}
@@ -67,7 +69,7 @@ const Line = ({ data }) => {
       axisBottom={{
         format: '%b %d',
         tickValues: 'every month',
-        legend: 'time scale',
+        // legend: 'time scale',
         legendOffset: -12,
       }}
       layers={[
@@ -81,15 +83,6 @@ const Line = ({ data }) => {
         'points',
         'legends',
       ]}
-      theme={{
-        crosshair: {
-          line: {
-            strokeWidth: 2,
-            stroke: '#774dd7',
-            strokeOpacity: 1,
-          },
-        },
-      }}
     />
   )
 }

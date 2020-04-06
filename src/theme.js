@@ -212,12 +212,32 @@ export const muiTheme = {
   dark: darkMuiTheme,
 }
 
+// WARN: Most of these values do not work!
 export const nivoTheme = ({ theme }) => {
   return {
     background: 'transparent',
     fontFamily: 'sans-serif',
     fontSize: 11,
     textColor: theme.foreground[8], // affects some axis labels (known: bar charts)
+    tooltip: {
+      container: {
+        background: 'white',
+        color: 'black',
+        fontSize: 'inherit',
+        borderRadius: '2px',
+        boxShadow: '0 1px 2px ',
+        padding: '5px 9px',
+      },
+      basic: {
+        whiteSpace: 'pre',
+        display: 'flex',
+        alignItems: 'center',
+      },
+      table: {},
+      tableCell: {
+        padding: '3px 5px',
+      },
+    },
     axis: {
       domain: {
         line: {
