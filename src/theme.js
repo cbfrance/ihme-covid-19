@@ -86,6 +86,7 @@ const sharedTheme = {
     lightNight: chroma('#2c2c5e').brighten(1.5).hex(),
     midGray: '#555',
     gray: ' #777',
+    cream: '#ffecdb',
     gold: '#FFDC44',
     orange: '#eeac51',
     silver: '#999',
@@ -144,7 +145,7 @@ const sharedTheme = {
 const theme = {
   light: {
     textPrimary: sharedTheme.colors.black,
-    backgroundPrimary: sharedTheme.colors.cloud,
+    backgroundPrimary: sharedTheme.colors.cream,
     backgroundSecondary: sharedTheme.colors.blacks[1],
     foreground: blacks,
     background: whites,
@@ -152,7 +153,7 @@ const theme = {
   },
   dark: {
     textPrimary: sharedTheme.colors.white,
-    backgroundPrimary: sharedTheme.colors.brightDarkNight,
+    backgroundPrimary: sharedTheme.colors.darkGuildBlue,
     backgroundSecondary: sharedTheme.colors.darkestNight,
     foreground: whites,
     background: blacks,
@@ -190,16 +191,16 @@ const darkMuiTheme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: sharedTheme.colors.black,
-      light: sharedTheme.colors.black,
-      dark: sharedTheme.colors.black,
-      contrastText: sharedTheme.colors.black,
+      main: sharedTheme.colors.blacks[8],
+      light: sharedTheme.colors.blacks[8],
+      dark: sharedTheme.colors.blacks[8],
+      contrastText: sharedTheme.colors.blacks[8],
     },
     secondary: {
-      main: sharedTheme.colors.white,
-      light: sharedTheme.colors.white,
-      dark: sharedTheme.colors.white,
-      contrastText: sharedTheme.colors.white,
+      main: sharedTheme.colors.whites[9],
+      light: sharedTheme.colors.whites[9],
+      dark: sharedTheme.colors.whites[9],
+      contrastText: sharedTheme.colors.whites[9],
     },
   },
 })

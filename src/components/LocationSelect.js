@@ -20,9 +20,10 @@ const LocationSelect = ({
   const menuItemPaddingTop = 8
 
   const MenuProps = {
+    disableScrollLock: true,
     PaperProps: {
       style: {
-        maxHeight: menuItemHeight * 4.5 + menuItemPaddingTop,
+        // maxHeight: menuItemHeight * 4.5 + menuItemPaddingTop,
         width: 250,
       },
     },

@@ -9,7 +9,7 @@ const NivoContainer = ({ children, height = '800px' }) => (
         height: '100%',
       }}
     >
-      <div style={{ height }}>{children}</div>
+      <div style={{ height: height }}>{children}</div>
     </div>
   </div>
 )

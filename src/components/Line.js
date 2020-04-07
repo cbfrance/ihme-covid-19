@@ -47,6 +47,7 @@ const Line = ({ data }) => {
         theme={nivoTheme({ theme: useContext(ThemeContext) })}
         margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
         data={data}
+        height={800}
         isInteractive={true}
         enableCrosshair={true}
         useMesh={true}
@@ -58,7 +59,7 @@ const Line = ({ data }) => {
         }}
         lineWidth={1}
         curve="natural"
-        colors={{ scheme: 'blue_green' }}
+        colors={{ scheme: 'category10' }}
         enableGridX={false}
         pointSize={2}
         tooltip={({ point }) =>
@@ -84,11 +85,10 @@ const Line = ({ data }) => {
         layers={[
           'grid',
           'markers',
+          AreaLayer,
           'areas',
-          // AreaLayer,
           'lines',
           'mesh',
-          // 'slices',
           'axes',
           'points',
           'legends',

@@ -24,7 +24,7 @@ const StyledAppBar = styled(AppBar)`
   box-shadow: none !important;
 `
 
-const Layout = ({ user, children, maxWidth }) => {
+const Layout = ({ select, children, maxWidth }) => {
   const [themeVariant, toggleThemeVariant, componentMounted] = useDarkMode()
 
   if (!componentMounted) {
@@ -36,7 +36,7 @@ const Layout = ({ user, children, maxWidth }) => {
       <MuiThemeProvider theme={muiTheme[themeVariant]}>
         <GlobalStyles />
         <FadeIn>
-          <StyledAppBar position="static">
+          <StyledAppBar position="fixed">
             <Row>
               <Row>
                 <Toolbar>
@@ -45,7 +45,8 @@ const Layout = ({ user, children, maxWidth }) => {
               </Row>
               <Row style={{ marginLeft: 'auto' }}>
                 <Toolbar>
-                  <Switch onClick={toggleThemeVariant} />
+                  {select}
+                  {/* <Switch onClick={toggleThemeVariant} /> */}
                 </Toolbar>
               </Row>
             </Row>

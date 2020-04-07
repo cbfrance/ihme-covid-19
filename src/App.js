@@ -7,6 +7,13 @@ import FadeIn from 'components/FadeIn'
 import Line from 'components/Line'
 import Layout from 'components/Layout'
 import LocationSelect from 'components/LocationSelect'
+import styled from 'styled-components'
+
+const BottomToolbar = styled.div`
+  position: fixed;
+  bottom: 0;
+  padding: 3rem;
+`
 
 function App() {
   const [fullDataset, setFullDataset] = useState()
@@ -29,9 +36,10 @@ function App() {
 
   useEffect(() => {
     if (fullDataset) {
+      console.log('fullDataset: ', fullDataset)
       setLocationNames(
-        Array.from(new Set(fullDataset.map((row) => row.location_name))).filter(
-          (name) => {
+        Array.from(new Set(fullDataset.map((row) => row.location_name)))
+          .filter((name) => {
             const filteredOut = [
               'United States of America',
               'Other Counties, WA',
@@ -39,8 +47,8 @@ function App() {
               'Life Care Center, Kirkland, WA',
             ]
             return !filteredOut.includes(name)
-          }
-        )
+          })
+          .sort()
       )
     }
   }, [fullDataset])
@@ -63,7 +71,9 @@ function App() {
                 if (hasDate) {
                   acc.push({
                     x: currentRow.date,
-                    y: currentRow.deaths_mean,
+                    y: currentRow.allbed_mean,
+                    yUpper: currentRow.allbed_upper,
+                    yLower: currentRow.allbed_lower,
                   })
                 }
 
@@ -80,18 +90,22 @@ function App() {
 
   if (chartData) {
     return (
-      <Layout>
-        <FadeIn>
-          <Line
-            data={chartData.filter((row) =>
-              visibleLocationNames.includes(row.id)
-            )}
-          />
+      <Layout
+        select={
           <LocationSelect
             locationNames={locationNames}
             label="States"
             visibleLocationNames={visibleLocationNames}
             setVisibleLocationNames={setVisibleLocationNames}
+          />
+        }
+      >
+        <BottomToolbar></BottomToolbar>
+        <FadeIn>
+          <Line
+            data={chartData.filter((row) =>
+              visibleLocationNames.includes(row.id)
+            )}
           />
         </FadeIn>
       </Layout>
