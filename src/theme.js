@@ -224,8 +224,8 @@ export const nivoTheme = ({ theme }) => {
     textColor: theme.foreground[8], // affects some axis labels (known: bar charts)
     tooltip: {
       container: {
-        background: theme.background[8],
-        color: theme.foreground[8],
+        background: '#ffffff',
+        color: '#000000',
         fontSize: 'inherit',
         borderRadius: '2px',
         boxShadow: '0 1px 2px ',

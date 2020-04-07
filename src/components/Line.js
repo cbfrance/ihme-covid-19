@@ -7,36 +7,23 @@ import { ThemeContext } from 'styled-components'
 import { nivoTheme } from 'theme'
 import NivoContainer from 'components/NivoContainer'
 
-const AreaLayer = ({ series, xScale, yScale, innerHeight }) => {
-  const areaGenerator = area()
-    .x((d) => xScale(d.data.x))
-    .y0((d) => Math.min(innerHeight, yScale(d.data.y - 40)))
-    .y1((d) => yScale(d.data.y + 10))
-    .curve(curveMonotoneX)
+const CustomSymbol = ({ data }) => {
+  const { size, color, borderWidth, borderColor, datum } = data
+
+  const scale = 800 / 45000
 
   return (
-    <>
-      <Defs
-        defs={[
-          {
-            id: 'pattern',
-            type: 'patternLines',
-            background: 'transparent',
-            color: '#3daff7',
-            lineWidth: 1,
-            spacing: 6,
-            rotation: -45,
-          },
-        ]}
+    <g>
+      <rect
+        fill="#fff"
+        width="1px"
+        rx="1px"
+        y={`-${(datum.y - 260) * scale}`}
+        height={(datum.yUpper - datum.yLower) * scale}
+        strokeWidth={borderWidth}
+        stroke={borderColor}
       />
-      <path
-        d={areaGenerator(series[0].data)}
-        fill="url(#pattern)"
-        fillOpacity={0.6}
-        stroke="#3daff7"
-        strokeWidth={2}
-      />
-    </>
+    </g>
   )
 }
 
@@ -45,7 +32,7 @@ const Line = ({ data }) => {
     <NivoContainer>
       <NivoLine
         theme={nivoTheme({ theme: useContext(ThemeContext) })}
-        margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
+        margin={{ top: 200, right: 20, bottom: 60, left: 80 }}
         data={data}
         height={800}
         isInteractive={true}
@@ -61,11 +48,11 @@ const Line = ({ data }) => {
         curve="natural"
         colors={{ scheme: 'category10' }}
         enableGridX={false}
-        pointSize={2}
+        pointSymbol={(data) => <CustomSymbol data={data} />}
         tooltip={({ point }) =>
           `${point.serieId} on ${point.data.xFormatted} might have ${Math.floor(
             point.data.yFormatted
-          ).toLocaleString()} deaths`
+          ).toLocaleString()}`
         }
         pointColor="white"
         pointBorderWidth={1}
@@ -85,7 +72,6 @@ const Line = ({ data }) => {
         layers={[
           'grid',
           'markers',
-          AreaLayer,
           'areas',
           'lines',
           'mesh',
