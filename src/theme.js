@@ -163,11 +163,8 @@ const theme = {
 
 // MUI Themeing setup
 //
-// (with "light" and "dark" keys added)
+// Is an object with "light" and "dark" keys
 //
-// TODO: consider removing the whole MUI theme and just using style components theming ... it's awkward we have two themeing systems, each with light and dark variations ...
-//
-// https://material-ui.com/customization/default-theme/
 
 const sharedMuiTheme = {
   typography: {
@@ -207,12 +204,17 @@ const darkMuiTheme = createMuiTheme({
   },
 })
 
+// The exported muiTheme
+//
 export const muiTheme = {
   light: lightMuiTheme,
   dark: darkMuiTheme,
 }
 
-// WARN: Most of these values do not work!
+// Nivo theme
+//
+// is a function that requires the computed theme as input
+//
 export const nivoTheme = ({ theme }) => {
   return {
     background: 'transparent',
@@ -221,8 +223,8 @@ export const nivoTheme = ({ theme }) => {
     textColor: theme.foreground[8], // affects some axis labels (known: bar charts)
     tooltip: {
       container: {
-        background: 'white',
-        color: 'black',
+        background: '#000000',
+        color: '#000000',
         fontSize: 'inherit',
         borderRadius: '2px',
         boxShadow: '0 1px 2px ',
@@ -233,9 +235,37 @@ export const nivoTheme = ({ theme }) => {
         display: 'flex',
         alignItems: 'center',
       },
+      chip: {
+        marginRight: 7,
+      },
       table: {},
       tableCell: {
         padding: '3px 5px',
+      },
+    },
+    annotations: {
+      text: {
+        fontSize: 13,
+        outlineWidth: 2,
+        outlineColor: '#ffffff',
+      },
+      link: {
+        stroke: '#000000',
+        strokeWidth: 1,
+        outlineWidth: 2,
+        outlineColor: '#ffffff',
+      },
+      outline: {
+        fill: 'none',
+        stroke: '#000000',
+        strokeWidth: 2,
+        outlineWidth: 2,
+        outlineColor: '#ffffff',
+      },
+      symbol: {
+        fill: '#000000',
+        outlineWidth: 2,
+        outlineColor: '#ffffff',
       },
     },
     axis: {

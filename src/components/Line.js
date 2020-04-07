@@ -3,8 +3,6 @@ import { Defs } from '@nivo/core'
 import { area, curveMonotoneX } from 'd3-shape'
 import { Line as NivoLine } from '@nivo/line'
 
-import { nivoTheme } from 'theme'
-
 const AreaLayer = ({ series, xScale, yScale, innerHeight }) => {
   const areaGenerator = area()
     .x((d) => xScale(d.data.x))
@@ -41,16 +39,18 @@ const AreaLayer = ({ series, xScale, yScale, innerHeight }) => {
 const Line = ({ data }) => {
   return (
     <NivoLine
-      // theme={nivoTheme}
       margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
       width={1200}
       height={800}
       data={data}
+      // isInteractive={true}
+      // enableCrosshair={true}
+      useMesh={true}
+      // debugMesh={true}
       animate={true}
-      enableSlices="x"
       yScale={{
         type: 'linear',
-        stacked: true,
+        stacked: false,
       }}
       lineWidth={1}
       curve="natural"
@@ -78,7 +78,8 @@ const Line = ({ data }) => {
         'areas',
         // AreaLayer,
         'lines',
-        'slices',
+        'mesh',
+        // 'slices',
         'axes',
         'points',
         'legends',

@@ -1,30 +1,29 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { GlobalStyles } from 'styles'
-// import Navigation from 'components/Navigation'
+import { GlobalStyles, Row } from 'styles'
 import { StylesProvider } from '@material-ui/styles'
-// import AppBar from '@material-ui/core/AppBar'
-// import { Toolbar } from '@material-ui/core'
-// import { Row } from 'components/styles'
-// import { NavLink } from 'util/router'
+import AppBar from '@material-ui/core/AppBar'
+import { Toolbar } from '@material-ui/core'
 import FadeIn from 'components/FadeIn'
 import useDarkMode from 'hooks/useDarkMode'
-// import Switch from '@material-ui/core/Switch'
-import { ThemeProvider } from 'styled-components'
+import Switch from '@material-ui/core/Switch'
+import { ThemeProvider as PrimaryThemeProvider } from 'styled-components'
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
-import theme, { muiTheme } from 'theme'
+import { ThemeProvider as NivoThemeProvider } from '@nivo/core'
+import theme, { muiTheme, nivoTheme } from 'theme'
 
 export const LayoutStyles = styled.div`
   max-width: ${(props) => (props.maxWidth ? props.maxWidth : '95%')};
   margin: 0 auto;
+  max-width: 1000px;
 `
 
-// const StyledAppBar = styled(AppBar)`
-//   transition: all 0.6s ease-in-out;
-//   background-color: ${(props) => props.theme.backgroundPrimary};
-//   color: ${(props) => props.theme.textPrimary} !important;
-//   box-shadow: none !important;
-// `
+const StyledAppBar = styled(AppBar)`
+  transition: all 0.6s ease-in-out;
+  background-color: ${(props) => props.theme.backgroundPrimary};
+  color: ${(props) => props.theme.textPrimary} !important;
+  box-shadow: none !important;
+`
 
 const Layout = ({ user, children, maxWidth }) => {
   const [themeVariant, toggleThemeVariant, componentMounted] = useDarkMode()
@@ -34,35 +33,30 @@ const Layout = ({ user, children, maxWidth }) => {
   }
 
   return (
-    <MuiThemeProvider theme={muiTheme[themeVariant]}>
-      <ThemeProvider theme={theme[themeVariant]}>
-        <FadeIn>
-          {/* <StyledAppBar position="static">
-            <Toolbar>
-              <NavLink to="/">
+    <PrimaryThemeProvider theme={theme[themeVariant]}>
+      <MuiThemeProvider theme={muiTheme[themeVariant]}>
+        <NivoThemeProvider theme={nivoTheme({ theme: theme[themeVariant] })}>
+          <GlobalStyles />
+          <FadeIn>
+            <StyledAppBar position="static">
+              <Toolbar>
                 <Row>
-                  <img
-                    width={30}
-                    src={themeVariant === 'dark' ? logoWhite : logoBlack}
-                    alt=""
-                  />
                   <h1>Page Title</h1>
                 </Row>
-              </NavLink>
 
-              <Navigation user={user} />
-              <Switch onClick={toggleThemeVariant} />
-            </Toolbar>
-          </StyledAppBar> */}
-          <LayoutStyles maxWidth={maxWidth}>
-            <StylesProvider>
-              <GlobalStyles />
-              {children}
-            </StylesProvider>
-          </LayoutStyles>
-        </FadeIn>
-      </ThemeProvider>
-    </MuiThemeProvider>
+                <Switch onClick={toggleThemeVariant} />
+              </Toolbar>
+            </StyledAppBar>
+            <LayoutStyles maxWidth={maxWidth}>
+              <StylesProvider>
+                <GlobalStyles />
+                {children}
+              </StylesProvider>
+            </LayoutStyles>
+          </FadeIn>
+        </NivoThemeProvider>
+      </MuiThemeProvider>
+    </PrimaryThemeProvider>
   )
 }
 

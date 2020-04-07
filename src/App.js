@@ -21,7 +21,6 @@ function App() {
   }, [])
 
   if (fullDataset) {
-    console.log('fullDataset: ', fullDataset)
     const locationNames = Array.from(
       new Set(fullDataset.map((row) => row.location_name))
     )

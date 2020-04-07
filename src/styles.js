@@ -55,6 +55,7 @@ export const GlobalStyles = createGlobalStyle`
     font-size: ${theme.fontSizes[2]}px;
     line-height: ${theme.lineHeights.copy};
     color: ${(props) => props.theme.textPrimary};
+    background-color: ${(props) => props.theme.backgroundPrimary};
     overflow-x: hidden;
     overflow-y: scroll;
     transition: all 0.6s ease-in-out;
