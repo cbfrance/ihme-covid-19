@@ -6,9 +6,16 @@ import theme from 'theme'
 import FadeIn from 'components/FadeIn'
 import Line from 'components/Line'
 import Layout from 'components/Layout'
+import LocationSelect from 'components/LocationSelect'
 
 function App() {
   const [fullDataset, setFullDataset] = useState()
+  const [locationNames, setLocationNames] = useState()
+  const [chartData, setChartData] = useState()
+  const [visibleLocationNames, setVisibleLocationNames] = useState([
+    'California',
+    'New York',
+  ])
 
   useEffect(() => {
     readRemoteFile('data/2020_04_05.05.us/Hospitalization_all_locs.csv', {
@@ -20,56 +27,72 @@ function App() {
     })
   }, [])
 
-  if (fullDataset) {
-    const locationNames = Array.from(
-      new Set(fullDataset.map((row) => row.location_name))
-    )
-
-    const chartData = locationNames.reduce((acc, currentLocation) => {
-      const locationData = fullDataset.filter(
-        (row) => row.location_name === currentLocation
+  useEffect(() => {
+    if (fullDataset) {
+      setLocationNames(
+        Array.from(new Set(fullDataset.map((row) => row.location_name))).filter(
+          (name) => {
+            const filteredOut = [
+              'United States of America',
+              'Other Counties, WA',
+              'King and Snohomish Counties (excluding Life Care Center), WA',
+              'Life Care Center, Kirkland, WA',
+            ]
+            return !filteredOut.includes(name)
+          }
+        )
       )
+    }
+  }, [fullDataset])
 
-      // date: "2020-07-06"
-      // ​​​
-      // deaths_lower: "0"
-      // ​​​
-      // deaths_mean: "0"
-      // ​​​
-      // deaths_upper: "0"
+  useEffect(() => {
+    if (locationNames) {
+      setChartData(
+        locationNames.reduce((acc, currentLocation) => {
+          const locationData = fullDataset.filter(
+            (row) => row.location_name === currentLocation
+          )
 
-      const hasLocation = Boolean(currentLocation)
+          if (currentLocation) {
+            acc.push({
+              id: currentLocation,
+              color: theme.colors.black,
+              data: locationData.reduce((acc, currentRow) => {
+                const hasDate = typeof currentRow.date !== 'undefined'
 
-      if (hasLocation) {
-        acc.push({
-          id: currentLocation,
-          color: theme.colors.black,
-          data: locationData.reduce((acc, currentRow) => {
-            const hasDate = typeof currentRow.date !== 'undefined'
+                if (hasDate) {
+                  acc.push({
+                    x: currentRow.date,
+                    y: currentRow.deaths_mean,
+                  })
+                }
 
-            if (hasDate) {
-              acc.push({
-                x: currentRow.date,
-                y: currentRow.deaths_mean,
-              })
-            }
+                return acc
+              }, []),
+            })
+          }
 
-            return acc
-          }, []),
-        })
-      }
+          return acc
+        }, [])
+      )
+    }
+  }, [fullDataset, locationNames])
 
-      return acc
-    }, [])
-
+  if (chartData) {
     return (
       <Layout>
         <FadeIn>
-          <div>
-            <h3>{locationNames.length} locations</h3>
-          </div>
-
-          <Line data={chartData} />
+          <Line
+            data={chartData.filter((row) =>
+              visibleLocationNames.includes(row.id)
+            )}
+          />
+          <LocationSelect
+            locationNames={locationNames}
+            label="States"
+            visibleLocationNames={visibleLocationNames}
+            setVisibleLocationNames={setVisibleLocationNames}
+          />
         </FadeIn>
       </Layout>
     )

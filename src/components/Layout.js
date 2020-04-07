@@ -9,12 +9,11 @@ import useDarkMode from 'hooks/useDarkMode'
 import Switch from '@material-ui/core/Switch'
 import { ThemeProvider as PrimaryThemeProvider } from 'styled-components'
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
-import { ThemeProvider as NivoThemeProvider } from '@nivo/core'
 import theme, { muiTheme, nivoTheme } from 'theme'
 
 export const LayoutStyles = styled.div`
   max-width: ${(props) => (props.maxWidth ? props.maxWidth : '95%')};
-  margin: 0 auto;
+  margin: 5rem auto;
   max-width: 1000px;
 `
 
@@ -35,26 +34,29 @@ const Layout = ({ user, children, maxWidth }) => {
   return (
     <PrimaryThemeProvider theme={theme[themeVariant]}>
       <MuiThemeProvider theme={muiTheme[themeVariant]}>
-        <NivoThemeProvider theme={nivoTheme({ theme: theme[themeVariant] })}>
-          <GlobalStyles />
-          <FadeIn>
-            <StyledAppBar position="static">
-              <Toolbar>
-                <Row>
-                  <h1>Page Title</h1>
-                </Row>
-
-                <Switch onClick={toggleThemeVariant} />
-              </Toolbar>
-            </StyledAppBar>
-            <LayoutStyles maxWidth={maxWidth}>
-              <StylesProvider>
-                <GlobalStyles />
-                {children}
-              </StylesProvider>
-            </LayoutStyles>
-          </FadeIn>
-        </NivoThemeProvider>
+        <GlobalStyles />
+        <FadeIn>
+          <StyledAppBar position="static">
+            <Row>
+              <Row>
+                <Toolbar>
+                  <h1>IHME data from April 5</h1>
+                </Toolbar>
+              </Row>
+              <Row style={{ marginLeft: 'auto' }}>
+                <Toolbar>
+                  <Switch onClick={toggleThemeVariant} />
+                </Toolbar>
+              </Row>
+            </Row>
+          </StyledAppBar>
+          <LayoutStyles maxWidth={maxWidth}>
+            <StylesProvider>
+              <GlobalStyles />
+              {children}
+            </StylesProvider>
+          </LayoutStyles>
+        </FadeIn>
       </MuiThemeProvider>
     </PrimaryThemeProvider>
   )
