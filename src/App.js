@@ -36,7 +36,6 @@ function App() {
 
   useEffect(() => {
     if (fullDataset) {
-      console.log('fullDataset: ', fullDataset)
       setLocationNames(
         Array.from(new Set(fullDataset.map((row) => row.location_name)))
           .filter((name) => {

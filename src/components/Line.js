@@ -7,19 +7,25 @@ import { ThemeContext } from 'styled-components'
 import { nivoTheme } from 'theme'
 import NivoContainer from 'components/NivoContainer'
 
-const CustomSymbol = ({ data }) => {
-  const { size, color, borderWidth, borderColor, datum } = data
+const chartHeight = 500
 
-  const scale = 800 / 45000
+const CustomSymbol = ({ data }) => {
+  const { borderWidth, borderColor, datum } = data
+
+  const chartYMargins = 260
+  const chartMaxValue = 47806
+  const scale = (chartHeight - chartYMargins) / chartMaxValue
+  const rawHeight = datum.yUpper - datum.yLower
+  const scaledHeight = rawHeight * scale
 
   return (
     <g>
       <rect
         fill="#fff"
-        width="1px"
+        width="0.5px"
         rx="1px"
-        y={`-${(datum.y - 260) * scale}`}
-        height={(datum.yUpper - datum.yLower) * scale}
+        y={`-${scaledHeight / 2}`}
+        height={scaledHeight}
         strokeWidth={borderWidth}
         stroke={borderColor}
       />
@@ -34,7 +40,7 @@ const Line = ({ data }) => {
         theme={nivoTheme({ theme: useContext(ThemeContext) })}
         margin={{ top: 200, right: 20, bottom: 60, left: 80 }}
         data={data}
-        height={800}
+        height={chartHeight}
         isInteractive={true}
         enableCrosshair={true}
         useMesh={true}
@@ -44,7 +50,7 @@ const Line = ({ data }) => {
           type: 'linear',
           stacked: false,
         }}
-        lineWidth={1}
+        lineWidth={2}
         curve="natural"
         colors={{ scheme: 'category10' }}
         enableGridX={false}
