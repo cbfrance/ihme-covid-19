@@ -9,11 +9,11 @@ import NivoContainer from 'components/NivoContainer'
 
 const chartHeight = 500
 
-const CustomSymbol = ({ data }) => {
+const CustomSymbol = ({ data, chartMaxValue }) => {
   const { borderWidth, borderColor, datum } = data
 
   const chartYMargins = 260
-  const chartMaxValue = 47806
+
   const scale = (chartHeight - chartYMargins) / chartMaxValue
   const rawHeight = datum.yUpper - datum.yLower
   const scaledHeight = rawHeight * scale
@@ -33,9 +33,9 @@ const CustomSymbol = ({ data }) => {
   )
 }
 
-const Line = ({ data }) => {
+const Line = ({ data, legend, chartMaxValue }) => {
   return (
-    <NivoContainer>
+    <NivoContainer height={chartHeight}>
       <NivoLine
         theme={nivoTheme({ theme: useContext(ThemeContext) })}
         margin={{ top: 200, right: 20, bottom: 60, left: 80 }}
@@ -54,7 +54,9 @@ const Line = ({ data }) => {
         curve="natural"
         colors={{ scheme: 'category10' }}
         enableGridX={false}
-        pointSymbol={(data) => <CustomSymbol data={data} />}
+        pointSymbol={(data) => (
+          <CustomSymbol data={data} chartMaxValue={chartMaxValue} />
+        )}
         tooltip={({ point }) =>
           `${point.serieId} on ${point.data.xFormatted} might have ${Math.floor(
             point.data.yFormatted
@@ -72,8 +74,12 @@ const Line = ({ data }) => {
         axisBottom={{
           format: '%b %d',
           tickValues: 'every month',
-          // legend: 'time scale',
           legendOffset: -12,
+        }}
+        axisLeft={{
+          legend: legend,
+          legendOffset: -60,
+          legendPosition: 'middle',
         }}
         layers={[
           'grid',

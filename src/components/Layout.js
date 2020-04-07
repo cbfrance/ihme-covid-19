@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { GlobalStyles, Row } from 'styles'
+import { GlobalStyles, Row, Column } from 'styles'
 import { StylesProvider } from '@material-ui/styles'
 import AppBar from '@material-ui/core/AppBar'
 import { Toolbar } from '@material-ui/core'
@@ -9,11 +9,11 @@ import useDarkMode from 'hooks/useDarkMode'
 import Switch from '@material-ui/core/Switch'
 import { ThemeProvider as PrimaryThemeProvider } from 'styled-components'
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
-import theme, { muiTheme, nivoTheme } from 'theme'
+import theme, { muiTheme } from 'theme'
 
 export const LayoutStyles = styled.div`
   max-width: ${(props) => (props.maxWidth ? props.maxWidth : '95%')};
-  margin: 5rem auto;
+  margin: 10rem auto;
   max-width: 1000px;
 `
 
@@ -22,10 +22,11 @@ const StyledAppBar = styled(AppBar)`
   background-color: ${(props) => props.theme.backgroundPrimary};
   color: ${(props) => props.theme.textPrimary} !important;
   box-shadow: none !important;
+  min-height: 180px;
 `
 
 const Layout = ({ select, children, maxWidth }) => {
-  const [themeVariant, toggleThemeVariant, componentMounted] = useDarkMode()
+  const [themeVariant, componentMounted] = useDarkMode()
 
   if (!componentMounted) {
     return <div />
@@ -37,19 +38,11 @@ const Layout = ({ select, children, maxWidth }) => {
         <GlobalStyles />
         <FadeIn>
           <StyledAppBar position="fixed">
-            <Row>
-              <Row>
-                <Toolbar>
-                  <h1>IHME data from April 5</h1>
-                </Toolbar>
-              </Row>
-              <Row style={{ marginLeft: 'auto' }}>
-                <Toolbar>
-                  {select}
-                  {/* <Switch onClick={toggleThemeVariant} /> */}
-                </Toolbar>
-              </Row>
-            </Row>
+            <Column style={{ padding: '2rem' }}>
+              <h1>IHME data from April 5</h1>
+              <div style={{ marginTop: '2rem' }}>{select}</div>
+            </Column>
+            {/* <Switch onClick={toggleThemeVariant} /> */}
           </StyledAppBar>
           <LayoutStyles maxWidth={maxWidth}>
             <StylesProvider>

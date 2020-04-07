@@ -1,7 +1,7 @@
 import React from 'react'
 
 const NivoContainer = ({ children, height = '800px' }) => (
-  <div style={{ position: 'relative' }}>
+  <div style={{ position: 'relative', height: height }}>
     <div
       style={{
         position: 'absolute',

@@ -18,7 +18,8 @@ const BottomToolbar = styled.div`
 function App() {
   const [fullDataset, setFullDataset] = useState()
   const [locationNames, setLocationNames] = useState()
-  const [chartData, setChartData] = useState()
+  const [hospitalizationChartData, setHospitalizationChartData] = useState()
+  const [deathsChartData, setDeathsChartData] = useState()
   const [visibleLocationNames, setVisibleLocationNames] = useState([
     'California',
     'New York',
@@ -54,7 +55,7 @@ function App() {
 
   useEffect(() => {
     if (locationNames) {
-      setChartData(
+      setHospitalizationChartData(
         locationNames.reduce((acc, currentLocation) => {
           const locationData = fullDataset.filter(
             (row) => row.location_name === currentLocation
@@ -84,10 +85,41 @@ function App() {
           return acc
         }, [])
       )
+
+      setDeathsChartData(
+        locationNames.reduce((acc, currentLocation) => {
+          const locationData = fullDataset.filter(
+            (row) => row.location_name === currentLocation
+          )
+
+          if (currentLocation) {
+            acc.push({
+              id: currentLocation,
+              color: theme.colors.black,
+              data: locationData.reduce((acc, currentRow) => {
+                const hasDate = typeof currentRow.date !== 'undefined'
+
+                if (hasDate) {
+                  acc.push({
+                    x: currentRow.date,
+                    y: currentRow.deaths_mean,
+                    yUpper: currentRow.deaths_upper,
+                    yLower: currentRow.deaths_lower,
+                  })
+                }
+
+                return acc
+              }, []),
+            })
+          }
+
+          return acc
+        }, [])
+      )
     }
   }, [fullDataset, locationNames])
 
-  if (chartData) {
+  if (deathsChartData && hospitalizationChartData) {
     return (
       <Layout
         select={
@@ -102,7 +134,17 @@ function App() {
         <BottomToolbar></BottomToolbar>
         <FadeIn>
           <Line
-            data={chartData.filter((row) =>
+            legend="Hospitalizations"
+            attr="hospitalizations"
+            chartMaxValue={47806}
+            data={hospitalizationChartData.filter((row) =>
+              visibleLocationNames.includes(row.id)
+            )}
+          />
+          <Line
+            legend="Deaths"
+            chartMaxValue={10000}
+            data={deathsChartData.filter((row) =>
               visibleLocationNames.includes(row.id)
             )}
           />
